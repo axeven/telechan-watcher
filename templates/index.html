@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>telechan-watcher</title>
+    <style>
+        body { font-family: system-ui, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { text-align: left; padding: 0.5rem; border-bottom: 1px solid #ddd; }
+        a { color: #2563eb; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .muted { color: #666; font-size: 0.9em; }
+        .paused { color: #b45309; }
+        form.inline { display: inline; }
+        button.link-btn { background: none; border: none; padding: 0; color: #2563eb; text-decoration: none; cursor: pointer; font: inherit; }
+        button.link-btn:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <h1>Channels</h1>
+    {% if channels %}
+    <table>
+        <tr><th>Label</th><th>Messages</th><th>Latest</th><th>Status</th><th></th></tr>
+        {% for c in channels %}
+        <tr>
+            <td><a href="{{ url_for('channel_detail', channel_id=c['id']) }}">{{ c['label'] }}</a></td>
+            <td>{{ c['message_count'] }}</td>
+            <td class="muted">{{ c['latest_at'] | wib }}</td>
+            <td>{% if c['paused'] %}<span class="paused">Paused</span>{% else %}Watching{% endif %}</td>
+            <td>
+                {% if c['paused'] %}
+                <form class="inline" method="post" action="{{ url_for('unpause_channel', channel_id=c['id']) }}">
+                    <button class="link-btn" type="submit">Resume</button>
+                </form>
+                {% else %}
+                <form class="inline" method="post" action="{{ url_for('pause_channel', channel_id=c['id']) }}">
+                    <button class="link-btn" type="submit">Pause</button>
+                </form>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p class="muted">No channels yet. Start watch.py and wait for a message.</p>
+    {% endif %}
+</body>
+</html>

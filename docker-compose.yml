@@ -1,0 +1,18 @@
+services:
+  watcher:
+    build: .
+    command: python watch.py
+    env_file: .env
+    volumes:
+      - .:/app
+    restart: unless-stopped
+
+  web:
+    build: .
+    command: python app.py
+    env_file: .env
+    volumes:
+      - .:/app
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
