@@ -2,3 +2,11 @@ venv/
 __pycache__/
 *.pyc
 messages/
+
+# Never bake secrets or local data into image layers
+.env
+*.session
+*.session-journal
+telechan.db
+telechan.db-wal
+telechan.db-shm

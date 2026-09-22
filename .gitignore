@@ -7,3 +7,6 @@ telechan.db
 telechan.db-wal
 telechan.db-shm
 messages/
+
+# Editor/tooling local settings
+.claude/settings.local.json

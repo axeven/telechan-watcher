@@ -5,7 +5,7 @@ DISPLAY_TZ = timezone(timedelta(hours=7))
 
 from dotenv import load_dotenv
 from telethon import TelegramClient, events
-from telethon.tl.types import Channel
+from telethon.tl.types import Channel, Chat
 
 import db
 
@@ -21,8 +21,8 @@ client = TelegramClient("telechan", API_ID, API_HASH)
 async def handler(event):
     chat = await event.get_chat()
 
-    # only broadcast channels, skip groups/DMs (megagroups have broadcast=False)
-    if not (isinstance(chat, Channel) and chat.broadcast):
+    # channels and groups/supergroups, skip DMs
+    if not isinstance(chat, (Channel, Chat)):
         return
 
     sender = await event.get_sender()
